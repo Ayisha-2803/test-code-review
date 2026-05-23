@@ -1,18 +1,28 @@
-# test-code-review
 import os
+import sqlite3
 
-SECRET_KEY = "supersecret123"
+# BAD CODE - Full of issues for testing ReviewBot
+
+SECRET_KEY = "mysecretkey123"
 DB_PASSWORD = "admin1234"
+API_TOKEN = "tok_live_abc123xyz"
 
 def login(username, password):
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
     query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'"
-    return query
+    cursor.execute(query)
+    return cursor.fetchall()
 
-def get_all_users():
-    users = []
-    for i in range(1000000):
-        users.append({"id": i})
-    return users
+def delete_user(user_id):
+    os.system("rm -rf /data/users/" + user_id)
 
-def delete_user(id):
-    os.system("rm -rf /users/" + id)
+def get_all_data():
+    results = []
+    for i in range(10000000):
+        results.append(i * 2)
+    return results
+
+def read_file(filename):
+    f = open("../../../etc/" + filename)
+    return f.read()
